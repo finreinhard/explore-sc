@@ -1,27 +1,59 @@
 import React, {PropsWithChildren} from 'react';
 import styled, {css, StyledComponent} from 'styled-components';
 
-export interface SkeletonProps extends PropsWithChildren<{}> {
-    size?: number;
-    borderRadius?: string;
+interface BaseSkeletonProps {
     backgroundColor?: string;
 }
 
-const StyledSkeleton: StyledComponent<'div', any, SkeletonProps> = styled.div.attrs((props: SkeletonProps) => ({
+interface AngularSkeletonStyleProps extends BaseSkeletonProps {
+    borderRadius?: string;
+    isChildren?: boolean;
+}
+
+export interface AngularSkeletonProps extends AngularSkeletonStyleProps {
+    size: number;
+    childColor?: string;
+}
+
+export interface RoundSkeletonProps extends BaseSkeletonProps {
+    size: string;
+}
+
+const BaseSkeleton = styled.div.attrs(() => ({
+    // Add a event handler on all skeleton divs directly
     onClick: console.log,
-}))`
-    width: 100%;
-    background-color: ${({backgroundColor}: SkeletonProps) => backgroundColor || '#333'};
-    min-height: ${({size}: SkeletonProps) => `${size || 1}em`};
-    ${({borderRadius}: SkeletonProps) => css`border-radius: ${borderRadius};`}
-    ${({children}) => children ? css`
-            padding: .5em;
-            > ${StyledSkeleton}:not(:first-child) {
-                margin-top: .5em;
-            }
-        ` : undefined}
+}))`background-color: ${({backgroundColor}: BaseSkeletonProps) => backgroundColor || '#333'};`;
+
+const StyledAngularSkeleton = styled(BaseSkeleton)`
+    min-height: 1em;
+    display: flex;
+    flex-direction: column;
+    ${({borderRadius}: AngularSkeletonStyleProps) => css`border-radius: ${borderRadius};`}
+    ${({isChildren}: AngularSkeletonStyleProps) => isChildren ? css`margin: .5em` : undefined}
 `;
 
-const Skeleton = (props: SkeletonProps) => <StyledSkeleton {...props} />
+export const AngularSkeleton = (props: PropsWithChildren<AngularSkeletonProps>) => {
+    const {size, childColor, ...styleProps} = props;
 
-export default Skeleton;
+    return (
+        <StyledAngularSkeleton {...styleProps}>
+            {Array.from(Array(Math.max(0, size)))
+                .map((e, i) => (
+                <StyledAngularSkeleton
+                    key={i}
+                    {...styleProps}
+                    backgroundColor={childColor || '#888'}
+                    isChildren
+                />
+            ))}
+        </StyledAngularSkeleton>
+    );
+}
+
+const StyledRoundSkeleton = styled(BaseSkeleton)`
+    width: ${({size}: RoundSkeletonProps) => size};
+    height: ${({size}: RoundSkeletonProps) => size};
+    border-radius: 50%;
+`;
+
+export const RoundSkeleton = (props: RoundSkeletonProps) => <StyledRoundSkeleton {...props} />;

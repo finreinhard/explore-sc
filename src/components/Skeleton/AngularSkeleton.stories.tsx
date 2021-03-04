@@ -1,15 +1,14 @@
 import React from 'react';
 import {Story, Meta} from '@storybook/react';
-import Skeleton, {SkeletonProps} from './index';
+import {AngularSkeletonProps, AngularSkeleton} from './index';
 
 export default {
-    title: 'Placeholder/Skeleton',
-    component: Skeleton,
+    title: 'Placeholder/AngularSkeleton',
+    component: AngularSkeleton,
     argTypes: {
         size: {
             control: 'number',
-            defaultValue: '1',
-            required: false,
+            defaultValue: 1,
         },
         borderRadius: {
             control: 'text',
@@ -20,10 +19,15 @@ export default {
             required: false,
             defaultValue: '#333',
         },
+        childColor: {
+            control: 'color',
+            required: false,
+            defaultValue: '#888',
+        },
     },
 } as Meta;
 
-const Template: Story<SkeletonProps> = (args) => <Skeleton {...args} />;
+const Template: Story<AngularSkeletonProps> = (args) => <AngularSkeleton {...args} />;
 
 export const Default = Template.bind({});
 
@@ -40,16 +44,4 @@ Large.args = {
 export const Colored = Template.bind({});
 Colored.args = {
     backgroundColor: 'red',
-};
-
-export const Nested = Template.bind({});
-Nested.args = {
-    children: (
-        <>
-            <Skeleton backgroundColor="#333" />
-            <Skeleton backgroundColor="#333" />
-            <Skeleton backgroundColor="#333" />
-        </>
-    ),
-    backgroundColor: '#111',
 };
