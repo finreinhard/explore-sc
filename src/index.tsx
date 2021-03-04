@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from "./components/Button";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+      <h1>This is a test App</h1>
+      <Button color="primary" $backgroundColor_hover="#333">
+          Test Button
+      </Button>
   </React.StrictMode>,
   document.getElementById('root')
 );
