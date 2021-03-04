@@ -1,5 +1,5 @@
 import React, {PropsWithChildren} from 'react';
-import styled, {css, StyledComponent} from 'styled-components';
+import styled, {css} from 'styled-components';
 
 interface BaseSkeletonProps {
     backgroundColor?: string;
